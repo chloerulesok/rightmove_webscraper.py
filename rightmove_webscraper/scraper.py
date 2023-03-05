@@ -188,7 +188,7 @@ class RightmoveData:
         # Optionally get floorplan links from property urls (longer runtime):
         floorplan_urls = list() if get_floorplans else np.nan
         propertydetails_urls = list() if get_propertydetails else np.nan
-        script_list = list() if get_propertydetails else np.nan
+        script_list = list() #if get_propertydetails else np.nan
 
         if get_floorplans:
             for weblink in weblinks:
@@ -253,7 +253,7 @@ class RightmoveData:
 
     def _get_results(self, get_floorplans: bool = False, get_propertydetails: bool = False):
         """Build a Pandas DataFrame with all results returned by the search."""
-        results = self._get_page(self._first_page, get_floorplans=get_floorplans)
+        results = self._get_page(self._first_page, get_floorplans=get_floorplans, get_propertydetails=get_propertydetails)
 
         # Iterate through all pages scraping results:
         for p in range(1, self.page_count + 1, 1):
