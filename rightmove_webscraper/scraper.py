@@ -200,7 +200,7 @@ class RightmoveData:
                     continue
                 tree = html.fromstring(content)
                 if get_floorplans:
-                    #xp_floorplan_url = """//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src"""
+                    #xp_floorplan_url = ""//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src""
                     #floorplan_url = tree.xpath(xp_floorplan_url)
                     if floorplan_url:
                         floorplan_urls.append(weblink + "#floorplan")
@@ -208,7 +208,7 @@ class RightmoveData:
                         floorplan_urls.append(np.nan)
 
                 if get_propertydetails:
-                    xp_floorplan_url = """//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src"""
+                    xp_floorplan_url = "//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src""
                     floorplan_url = tree.xpath(xp_floorplan_url)
                     if floorplan_url:
                         floorplan_urls.append(floorplan_url[0])
