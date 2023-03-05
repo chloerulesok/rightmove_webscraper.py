@@ -195,7 +195,7 @@ class RightmoveData:
                 floorplan_urls.append(urlparse(weblink)._replace(fragment='').geturl() + "#floorplan")
 
         if get_propertydetails:
-            xp_script = """//script"""
+            xp_script = """//script/text()"""
             pattern = 'PAGE_MODEL'
             for weblink in weblinks:
                 status_code, content = self._request(weblink)
