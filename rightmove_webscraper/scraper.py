@@ -204,7 +204,7 @@ class RightmoveData:
                 tree = html.fromstring(content)
                 scripts = tree.xpath(xp_script)
                 for script in scripts:
-                    result = re.search(pattern, str(item))
+                    result = re.search(pattern, str(script))
                     if result:
                         script_list.append(script)
 
