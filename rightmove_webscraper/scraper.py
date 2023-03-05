@@ -16,7 +16,7 @@ class RightmoveData:
 
     The query to rightmove can be renewed by calling the `refresh_data` method.
     """
-    def __init__(self, url: str, get_floorplans: bool = False):
+    def __init__(self, url: str, get_floorplans: bool = False, get_propertydetails: bool = False):
         """Initialize the scraper with a URL from the results of a property
         search performed on www.rightmove.co.uk.
 
@@ -25,18 +25,21 @@ class RightmoveData:
             get_floorplans (bool): optionally scrape links to the individual
                 floor plan images for each listing (be warned this drastically
                 increases runtime so is False by default).
+            get_propertydetails (bool): optionally scrape links to the individual
+                property details for each listing (be warned this drastically
+                increases runtime so is False by default).
         """
         self._status_code, self._first_page = self._request(url)
         self._url = url
         self._validate_url()
-        self._results = self._get_results(get_floorplans=get_floorplans)
+        self._results = self._get_results(get_floorplans=get_floorplans, get_propertydetails=get_propertydetails)
 
     @staticmethod
     def _request(url: str):
         r = requests.get(url)
         return r.status_code, r.content
 
-    def refresh_data(self, url: str = None, get_floorplans: bool = False):
+    def refresh_data(self, url: str = None, get_floorplans: bool = False, get_propertydetails: bool = False):
         """Make a fresh GET request for the rightmove data.
 
         Args:
@@ -50,7 +53,7 @@ class RightmoveData:
         self._status_code, self._first_page = self._request(url)
         self._url = url
         self._validate_url()
-        self._results = self._get_results(get_floorplans=get_floorplans)
+        self._results = self._get_results(get_floorplans=get_floorplans, get_propertydetails=get_propertydetails)
 
     def _validate_url(self):
         """Basic validation that the URL at least starts in the right format and
@@ -148,7 +151,7 @@ class RightmoveData:
             page_count = 42
         return page_count
 
-    def _get_page(self, request_content: str, get_floorplans: bool = False):
+    def _get_page(self, request_content: str, get_floorplans: bool = False, get_propertydetails: bool = False):
         """Method to scrape data from a single page of search results. Used
         iteratively by the `get_results` method to scrape data from every page
         returned by the search."""
@@ -183,18 +186,35 @@ class RightmoveData:
 
         # Optionally get floorplan links from property urls (longer runtime):
         floorplan_urls = list() if get_floorplans else np.nan
+        propertydetails_urls = list() if get_propertydetails else np.nan
+
         if get_floorplans:
+            for weblink in weblinks:
+                floorplan_urls.append(weblink + "#floorplan")
+
+        """
+        if get_floorplans || get_propertydetails:
             for weblink in weblinks:
                 status_code, content = self._request(weblink)
                 if status_code != 200:
                     continue
                 tree = html.fromstring(content)
-                xp_floorplan_url = """//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src"""
-                floorplan_url = tree.xpath(xp_floorplan_url)
-                if floorplan_url:
-                    floorplan_urls.append(floorplan_url[0])
-                else:
-                    floorplan_urls.append(np.nan)
+                if get_floorplans:
+                    #xp_floorplan_url = """//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src"""
+                    #floorplan_url = tree.xpath(xp_floorplan_url)
+                    if floorplan_url:
+                        floorplan_urls.append(weblink + "#floorplan")
+                    else:
+                        floorplan_urls.append(np.nan)
+
+                if get_propertydetails:
+                    xp_floorplan_url = """//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src"""
+                    floorplan_url = tree.xpath(xp_floorplan_url)
+                    if floorplan_url:
+                        floorplan_urls.append(floorplan_url[0])
+                    else:
+                        floorplan_urls.append(np.nan)
+        """
 
         # Store the data in a Pandas DataFrame:
         data = [price_pcm, titles, addresses, weblinks, agent_urls]
