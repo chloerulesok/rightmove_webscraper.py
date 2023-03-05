@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 import requests
+import re
 
 class RightmoveData:
     """The `RightmoveData` webscraper collects structured data on properties
@@ -187,10 +188,28 @@ class RightmoveData:
         # Optionally get floorplan links from property urls (longer runtime):
         floorplan_urls = list() if get_floorplans else np.nan
         propertydetails_urls = list() if get_propertydetails else np.nan
+        script_list = list() if get_propertydetails else np.nan
 
         if get_floorplans:
             for weblink in weblinks:
                 floorplan_urls.append(urlparse(weblink)._replace(fragment='').geturl() + "#floorplan")
+
+        if get_propertydetails:
+            xp_script = """//script"""
+            pattern = 'PAGE_MODEL'
+            for weblink in weblinks:
+                status_code, content = self._request(weblink)
+                if status_code != 200:
+                    continue
+                tree = html.fromstring(content)
+                scripts = tree.xpath(xp_script)
+                for script in scripts:
+                    result = re.search(pattern, str(item))
+                    if result:
+                        script_list.append(script)
+
+
+
 
         """
         if get_floorplans || get_propertydetails:
@@ -217,11 +236,11 @@ class RightmoveData:
         """
 
         # Store the data in a Pandas DataFrame:
-        data = [price_pcm, titles, addresses, weblinks, agent_urls]
+        data = [price_pcm, titles, addresses, weblinks, agent_urls,script_list]
         data = data + [floorplan_urls] if get_floorplans else data
         temp_df = pd.DataFrame(data)
         temp_df = temp_df.transpose()
-        columns = ["price", "type", "address", "url", "agent_url"]
+        columns = ["price", "type", "address", "url", "agent_url","script"]
         columns = columns + ["floorplan_url"] if get_floorplans else columns
         temp_df.columns = columns
 
