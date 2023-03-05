@@ -188,7 +188,7 @@ class RightmoveData:
         # Optionally get floorplan links from property urls (longer runtime):
         floorplan_urls = list() if get_floorplans else np.nan
         propertydetails_urls = list() if get_propertydetails else np.nan
-        script_list = list() #if get_propertydetails else np.nan
+        script_list = list() if get_propertydetails else np.nan
 
         if get_floorplans:
             for weblink in weblinks:
@@ -203,10 +203,13 @@ class RightmoveData:
                     continue
                 tree = html.fromstring(content)
                 scripts = tree.xpath(xp_script)
+                script_list.append(scripts[0])
+                """
                 for script in scripts:
                     result = re.search(pattern, str(script))
                     if result:
                         script_list.append(script)
+                """
 
 
 
