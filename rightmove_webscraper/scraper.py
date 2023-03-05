@@ -202,7 +202,7 @@ class RightmoveData:
                 if status_code != 200:
                     continue
                 tree = html.fromstring(content)
-                scripts = tree.xpath(xp_script)
+                scripts = [f"{tree.xpath(xp_script)[s]}" for s in range(len(tree.xpath(xp_script)))]
                 script_list.append(scripts[0])
                 """
                 for script in scripts:
