@@ -230,7 +230,7 @@ class RightmoveData:
 
         return temp_df
 
-    def _get_results(self, get_floorplans: bool = False):
+    def _get_results(self, get_floorplans: bool = False, get_propertydetails: bool = False):
         """Build a Pandas DataFrame with all results returned by the search."""
         results = self._get_page(self._first_page, get_floorplans=get_floorplans)
 
