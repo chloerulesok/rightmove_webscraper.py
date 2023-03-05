@@ -236,12 +236,14 @@ class RightmoveData:
         """
 
         # Store the data in a Pandas DataFrame:
-        data = [price_pcm, titles, addresses, weblinks, agent_urls,script_list]
+        data = [price_pcm, titles, addresses, weblinks, agent_urls]
         data = data + [floorplan_urls] if get_floorplans else data
+        data = data + [script_list] if get_propertydetails else data
         temp_df = pd.DataFrame(data)
         temp_df = temp_df.transpose()
-        columns = ["price", "type", "address", "url", "agent_url","script"]
+        columns = ["price", "type", "address", "url", "agent_url"]
         columns = columns + ["floorplan_url"] if get_floorplans else columns
+        columns = columns + ["script"] if get_propertydetails else columns
         temp_df.columns = columns
 
         # Drop empty rows which come from placeholders in the html:
