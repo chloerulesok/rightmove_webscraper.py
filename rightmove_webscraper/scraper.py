@@ -1,10 +1,10 @@
 
 import datetime
 from lxml import html
+from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 import requests
-
 
 class RightmoveData:
     """The `RightmoveData` webscraper collects structured data on properties
