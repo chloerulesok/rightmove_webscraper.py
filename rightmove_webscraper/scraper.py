@@ -269,7 +269,7 @@ class RightmoveData:
                 break
 
             # Create a temporary DataFrame of page results:
-            temp_df = self._get_page(content, get_floorplans=get_floorplans)
+            temp_df = self._get_page(content, get_floorplans=get_floorplans, get_propertydetails=get_propertydetails)
 
             # Concatenate the temporary DataFrame with the full DataFrame:
             frames = [results, temp_df]
