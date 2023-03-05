@@ -190,7 +190,7 @@ class RightmoveData:
 
         if get_floorplans:
             for weblink in weblinks:
-                floorplan_urls.append(urlparse(weblink)._replace(fragment='').geturl() + "#HELLO")
+                floorplan_urls.append(urlparse(weblink)._replace(fragment='').geturl() + "#floorplan")
 
         """
         if get_floorplans || get_propertydetails:
