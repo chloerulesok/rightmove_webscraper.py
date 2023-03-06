@@ -205,12 +205,10 @@ class RightmoveData:
                 scripts = [f"{tree.xpath(xp_script)[s]}" for s in range(len(tree.xpath(xp_script)))]
                 #script_list.append(scripts[0])
                 for script in scripts:
-                    script_list.append(script)
-                    """
+                    #script_list.append(script)ß
                     result = re.search(pattern, str(script))
                     if result:
                         script_list.append(script)
-                    """
 
 
 
