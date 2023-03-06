@@ -206,8 +206,8 @@ class RightmoveData:
                 #script_list.append(scripts[0])
                 for script in scripts:
                     #script_list.append(script)ß
-                    result = re.search(re_pagemodel, str(script))
-                    if result:
+                    res_pagemodel = re.search(re_pagemodel, str(script))
+                    if res_pagemodel:
 
                         script_list.append(script)
 
