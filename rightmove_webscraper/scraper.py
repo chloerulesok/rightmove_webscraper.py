@@ -210,7 +210,7 @@ class RightmoveData:
                     res_pagemodel = re.search(re_pagemodel, str(script))
                     if res_pagemodel:
                         res_jsoncapture = re.search(re_jsoncapture, str(script))
-                        script_list.append(res_jsoncapture)
+                        script_list.append(res_jsoncapture[0])
 
 
 
