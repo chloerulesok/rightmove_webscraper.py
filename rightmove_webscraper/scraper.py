@@ -197,7 +197,8 @@ class RightmoveData:
         if get_propertydetails:
             xp_script = """//script/text()"""
             re_pagemodel = 'PAGE_MODEL'
-            re_jsonextract = '({.+})'
+            #re_jsonextract = '({.+})'
+            re_jsonextract = '(PAGE_MODEL)'
             for weblink in weblinks:
                 status_code, content = self._request(weblink)
                 if status_code != 200:
