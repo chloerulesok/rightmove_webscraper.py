@@ -196,9 +196,7 @@ class RightmoveData:
 
         if get_propertydetails:
             xp_script = """//script/text()"""
-            re_pagemodel = 'PAGE_MODEL'
-            #re_jsonextract = '({.+})'
-            re_jsonextract = '(PAGE_MODEL)'
+            pattern = 'PAGE_MODEL'
             for weblink in weblinks:
                 status_code, content = self._request(weblink)
                 if status_code != 200:
@@ -208,10 +206,10 @@ class RightmoveData:
                 #script_list.append(scripts[0])
                 for script in scripts:
                     #script_list.append(script)ß
-                    pagemodel_result = re.search(re_pagemodel, str(script))
-                    if pagemodel_result:
-                        jsonextract_result = re.match(re_jsonextract, str(script))
-                        script_list.append(jsonextract_result)
+                    result = re.search(pattern, str(script))
+                    if result:
+
+                        script_list.append(script)
 
 
 
