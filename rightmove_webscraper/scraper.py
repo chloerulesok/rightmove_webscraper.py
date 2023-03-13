@@ -214,7 +214,7 @@ class RightmoveData:
                         res_jsoncapture = re.search(re_jsoncapture, str(script))
                         script_list.append(res_jsoncapture[0])
                         #New stuff
-                        property_data = json.loads(res_jsoncapture[0]).get("propertyData")
+                        property_data = dict(json.loads(res_jsoncapture[0]).get("propertyData")).get("prices")
                         metadata = json.loads(res_jsoncapture[0]).get("metadata")
                         #price = property_data.get("propertyData")
                         primary_prices.append(property_data)
