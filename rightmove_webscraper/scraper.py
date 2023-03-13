@@ -252,7 +252,7 @@ class RightmoveData:
         temp_df = temp_df.transpose()
         columns = ["price", "type", "address", "url", "agent_url"]
         columns = columns + ["floorplan_url"] if get_floorplans else columns
-        columns = columns + ["script","primary_price"] if get_propertydetails else columns
+        columns = columns + ["scripts","primary_price"] if get_propertydetails else columns
         temp_df.columns = columns
 
         # Drop empty rows which come from placeholders in the html:
