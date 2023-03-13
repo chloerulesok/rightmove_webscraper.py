@@ -247,7 +247,7 @@ class RightmoveData:
         # Store the data in a Pandas DataFrame:
         data = [price_pcm, titles, addresses, weblinks, agent_urls]
         data = data + [floorplan_urls] if get_floorplans else data
-        data = data + [script_list] if get_propertydetails else data
+        data = data + [script_list, primary_prices] if get_propertydetails else data
         temp_df = pd.DataFrame(data)
         temp_df = temp_df.transpose()
         columns = ["price", "type", "address", "url", "agent_url"]
