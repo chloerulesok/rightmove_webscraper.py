@@ -215,7 +215,7 @@ class RightmoveData:
                         script_list.append(res_jsoncapture[0])
                         #New stuff
                         property_data = json.loads(res_jsoncapture[0])
-                        primary_prices.append(property_data['propertyData']['prices']['primaryPrice'])
+                        primary_prices.append(str(property_data['propertyData']['prices']['primaryPrice']))
 
 
 
@@ -252,7 +252,7 @@ class RightmoveData:
         temp_df = temp_df.transpose()
         columns = ["price", "type", "address", "url", "agent_url"]
         columns = columns + ["floorplan_url"] if get_floorplans else columns
-        columns = columns + ["scripts","primary_price"] if get_propertydetails else columns
+        columns = columns + ["script","primary_price"] if get_propertydetails else columns
         temp_df.columns = columns
 
         # Drop empty rows which come from placeholders in the html:
