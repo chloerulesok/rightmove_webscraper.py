@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import requests
 import re
+import json
 
 class RightmoveData:
     """The `RightmoveData` webscraper collects structured data on properties
@@ -189,6 +190,8 @@ class RightmoveData:
         floorplan_urls = list() if get_floorplans else np.nan
         propertydetails_urls = list() if get_propertydetails else np.nan
         script_list = list() if get_propertydetails else np.nan
+        #New stuff
+        primary_prices = list() if get_propertydetails else np.nan
 
         if get_floorplans:
             for weblink in weblinks:
@@ -206,12 +209,13 @@ class RightmoveData:
                 scripts = [f"{tree.xpath(xp_script)[s]}" for s in range(len(tree.xpath(xp_script)))]
                 #script_list.append(scripts[0])
                 for script in scripts:
-                    #script_list.append(script)ß
                     res_pagemodel = re.search(re_pagemodel, str(script))
                     if res_pagemodel:
                         res_jsoncapture = re.search(re_jsoncapture, str(script))
                         script_list.append(res_jsoncapture[0])
-
+                        #New stuff
+                        property_data = json.loads(res_jsoncapture[0])
+                        primary_prices.append(property_data['propertyData']['prices']['primaryPrice'])
 
 
 
