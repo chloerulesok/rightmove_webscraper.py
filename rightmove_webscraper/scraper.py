@@ -188,10 +188,7 @@ class RightmoveData:
 
         # Optionally get floorplan links from property urls (longer runtime):
         floorplan_urls = list() if get_floorplans else np.nan
-        propertydetails_urls = list() if get_propertydetails else np.nan
-        script_list = list() if get_propertydetails else np.nan
-        #New stuff
-        primary_prices = list() if get_propertydetails else np.nan
+        propertydetails = list() if get_propertydetails else np.nan
 
         if get_floorplans:
             for weblink in weblinks:
@@ -212,50 +209,21 @@ class RightmoveData:
                     res_pagemodel = re.search(re_pagemodel, str(script))
                     if res_pagemodel:
                         res_jsoncapture = re.search(re_jsoncapture, str(script))
-                        script_list.append(res_jsoncapture[0])
-                        #New stuff
-
-                        #property_data = json.loads(res_jsoncapture[0])
-                        #prices = property_data['propertyData']
-                        #price = property_data.get("propertyData")
-                        #primary_prices.append(property_data)
+                        propertydetails.append(res_jsoncapture[0])
 
 
 
 
-        """
-        if get_floorplans || get_propertydetails:
-            for weblink in weblinks:
-                status_code, content = self._request(weblink)
-                if status_code != 200:
-                    continue
-                tree = html.fromstring(content)
-                if get_floorplans:
-                    #xp_floorplan_url = ""//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src""
-                    #floorplan_url = tree.xpath(xp_floorplan_url)
-                    if floorplan_url:
-                        floorplan_urls.append(weblink + "#floorplan")
-                    else:
-                        floorplan_urls.append(np.nan)
-
-                if get_propertydetails:
-                    xp_floorplan_url = "//*[@id="floorplanTabs"]/div[2]/div[2]/img/@src""
-                    floorplan_url = tree.xpath(xp_floorplan_url)
-                    if floorplan_url:
-                        floorplan_urls.append(floorplan_url[0])
-                    else:
-                        floorplan_urls.append(np.nan)
-        """
 
         # Store the data in a Pandas DataFrame:
         data = [price_pcm, titles, addresses, weblinks, agent_urls]
         data = data + [floorplan_urls] if get_floorplans else data
-        data = data + [script_list, primary_prices] if get_propertydetails else data
+        data = data + [propertydetails] if get_propertydetails else data
         temp_df = pd.DataFrame(data)
         temp_df = temp_df.transpose()
         columns = ["price", "type", "address", "url", "agent_url"]
         columns = columns + ["floorplan_url"] if get_floorplans else columns
-        columns = columns + ["script","primary_price"] if get_propertydetails else columns
+        columns = columns + ["propertydetails_json"] if get_propertydetails else columns
         temp_df.columns = columns
 
         # Drop empty rows which come from placeholders in the html:
